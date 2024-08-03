@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Analysis</title>
+</head>
+<body>
+    <h1>Upload CSV File</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+
+    {% if summary %}
+        <h2>Data Summary</h2>
+        <h3>First Few Rows</h3>
+        {{ summary.head|safe }}
+        <h3>Summary Statistics</h3>
+        {{ summary.describe|safe }}
+        <h3>Missing Values</h3>
+        {{ summary.missing_values|safe }}
+    {% endif %}
+
+    {% if plots %}
+        <h2>Data Visualizations</h2>
+        {% for plot in plots %}
+            <img src="data:image/png;base64,{{ plot}}" alt="Plot">
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
